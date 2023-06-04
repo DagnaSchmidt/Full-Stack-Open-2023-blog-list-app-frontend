@@ -19,7 +19,6 @@ const App = () => {
 
     try {
       const user = await loginService.login({username, password});
-      console.log(user);
       setUser(user);
       setUsername('');
       setPassword('');
@@ -36,7 +35,7 @@ const App = () => {
         {user ?
           <>
             <h2>blogs</h2>
-            <h5> logged in</h5>
+            <h5>{user.username} logged in</h5>
             {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
           </>
         :
@@ -55,7 +54,7 @@ const App = () => {
               <div>
                 <label>password</label>
                 <input
-                  type='text'
+                  type='password'
                   value={password}
                   name='password'
                   onChange={({target}) => setPassword(target.value)}
