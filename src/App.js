@@ -4,7 +4,7 @@ import { getAll, setToken, create, update } from './services/blogs';
 import loginService from './services/login';
 
 const App = () => {
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -18,11 +18,11 @@ const App = () => {
     getAll().then(blogs => setBlogs(blogs));
 
     const loggedUser = window.localStorage.getItem('loggedUser');
-    if(loggedUser){
-      const newUser = JSON.parse(loggedUser);
-      setUser(newUser);
-      setToken(newUser.token);
-    }
+      if(loggedUser){
+        const newUser = JSON.parse(loggedUser);
+        setUser(newUser);
+        setToken(newUser.token);
+      };
     // eslint-disable-next-line
   }, []);
 
@@ -36,9 +36,11 @@ const App = () => {
       setUser(user);
       setUsername('');
       setPassword('');
+      setErrorMessage({title: 'user successfully logged in', border: 'green'});
+      setTimeout(() => {setErrorMessage(null)}, 5000);
     }
     catch (exception) {
-      setErrorMessage('Wrong credentials');
+      setErrorMessage({title: 'Wrong credentials', border: 'red'});
       setTimeout(() => {setErrorMessage(null)}, 5000);
     }
   };
@@ -48,19 +50,32 @@ const App = () => {
     window.localStorage.clear();
   };
 
-  const handleCreateBlog = (e) => {
+  const handleCreateBlog = async (e) => {
+    e.preventDefault();
+
     const newBlog = {
       title: title,
       author: author,
       url: url
     };
-
-    create(newBlog);
+    try {
+      const addedBlog = await create(newBlog);
+      setErrorMessage({title: `a new blog: ${title} successfully added!`, border: 'green'});
+      setTimeout(() => {setErrorMessage(null)}, 5000);
+      const allBlogs = await getAll();
+      setBlogs(allBlogs);
+    }
+    catch (exception) {
+      setErrorMessage({title: 'failed to add blog', border: 'red'});
+      setTimeout(() => {setErrorMessage(null)}, 5000);
+    }
   }
 
   return (
     <div>
-      <div>{errorMessage}</div>
+      {errorMessage &&
+          <div style={{padding: '6px',borderStyle: 'solid', borderWidth: '3px', borderColor: errorMessage.border}}>{errorMessage.title}</div>
+      }
         {user ?
           <>
             <h2>user</h2>
