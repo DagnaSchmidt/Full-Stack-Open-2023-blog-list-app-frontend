@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import { getAll, setToken, create, update } from './services/blogs';
-import loginService from './services/login';
 import LoginForm from './components/LoginForm';
 import AddNewBlogForm from './components/AddNewBlogForm';
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+
   const [user, setUser] = useState(null);
 
   const [title, setTitle] = useState('');
@@ -29,25 +27,6 @@ const App = () => {
       };
     // eslint-disable-next-line
   }, []);
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    try {
-      const user = await loginService.login({username, password});
-      window.localStorage.setItem('loggedUser', JSON.stringify(user));
-      setToken(user.token);
-      setUser(user);
-      setUsername('');
-      setPassword('');
-      setErrorMessage({title: 'user successfully logged in', border: 'green'});
-      setTimeout(() => {setErrorMessage(null)}, 5000);
-    }
-    catch (exception) {
-      setErrorMessage({title: 'Wrong credentials', border: 'red'});
-      setTimeout(() => {setErrorMessage(null)}, 5000);
-    }
-  };
 
   const handleLogout = () => {
     setUser(null);
@@ -92,7 +71,7 @@ const App = () => {
             {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
           </>
         :
-          <LoginForm handleLogin={handleLogin} username={username} setUsername={setUsername} password={password} setPassword={setPassword} />
+          <LoginForm setToken={setToken} setUser={setUser} setErrorMessage={setErrorMessage} />
         }
     </div>
   )
