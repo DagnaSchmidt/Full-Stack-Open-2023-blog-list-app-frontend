@@ -1,6 +1,33 @@
-import React from 'react'
+import React, {useState} from 'react';
+import { getAll, create } from '../services/blogs.js';
 
-const AddNewBlogForm = ({handleCreateBlog, title, setTitle, author, setAuthor, url, setUrl}) => {
+const AddNewBlogForm = ({setErrorMessage, setBlogs, setAddNewBlogToggle}) => {
+    const [title, setTitle] = useState('');
+    const [author, setAuthor] = useState('');
+    const [url, setUrl] = useState('');
+
+    const handleCreateBlog = async (e) => {
+        e.preventDefault();
+    
+        const newBlog = {
+          title: title,
+          author: author,
+          url: url
+        };
+        try {
+          const addedBlog = await create(newBlog);
+          setErrorMessage({title: `a new blog: ${title} successfully added!`, border: 'green'});
+          setTimeout(() => {setErrorMessage(null)}, 5000);
+          const allBlogs = await getAll();
+          setBlogs(allBlogs);
+          setAddNewBlogToggle(false);
+        }
+        catch (exception) {
+          setErrorMessage({title: 'failed to add blog', border: 'red'});
+          setTimeout(() => {setErrorMessage(null)}, 5000);
+        }
+      };
+
   return (
             <form onSubmit={handleCreateBlog}>
               <label>Title</label>
