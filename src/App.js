@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Blog from './components/Blog';
-import blogService from './services/blogs';
+import { getAll, setToken, create, update } from './services/blogs';
 import loginService from './services/login';
 
 const App = () => {
@@ -11,7 +11,15 @@ const App = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    blogService.getAll().then(blogs => setBlogs(blogs));
+    getAll().then(blogs => setBlogs(blogs));
+
+    const loggedUser = window.localStorage.getItem('loggedUser');
+    if(loggedUser){
+      const newUser = JSON.parse(loggedUser);
+      setUser(newUser);
+      setToken(newUser.token);
+    }
+    // eslint-disable-next-line
   }, []);
 
   const handleLogin = async (e) => {
@@ -19,6 +27,8 @@ const App = () => {
 
     try {
       const user = await loginService.login({username, password});
+      window.localStorage.setItem('loggedUser', JSON.stringify(user));
+      setToken(user.token);
       setUser(user);
       setUsername('');
       setPassword('');
@@ -27,7 +37,12 @@ const App = () => {
       setErrorMessage('Wrong credentials');
       setTimeout(() => {setErrorMessage(null)}, 5000);
     }
-  }
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    window.localStorage.clear();
+  };
 
   return (
     <div>
@@ -35,7 +50,7 @@ const App = () => {
         {user ?
           <>
             <h2>blogs</h2>
-            <h5>{user.username} logged in</h5>
+            <div><h5>{user.username} logged in</h5><button onClick={() => handleLogout()}>log out</button></div>
             {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
           </>
         :
