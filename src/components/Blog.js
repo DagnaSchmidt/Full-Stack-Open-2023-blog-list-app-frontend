@@ -1,7 +1,10 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
+import { update, getAll } from '../services/blogs';
 
-const Blog = ({blog}) => {
+const Blog = ({blog, setBlogs}) => {
   const [details, setDetails] = useState(false);
+  const {id, title, url, likes, user} = blog;
+  console.log(id);
 
   const blogStyle = {
     padding: 8,
@@ -10,15 +13,20 @@ const Blog = ({blog}) => {
     marginBottom: 5
   }
 
+  const handleUpdateBlog = async (id) => {
+    await update(id);
+    getAll().then(blogs => setBlogs(blogs));
+  }
+
   return (
     <div style={blogStyle}>
-      <p>{blog.title}</p>
+      <p>{title}</p>
       {details &&
         <div>
-          <p>{blog.url}</p>
-          <p>{blog.likes}</p>
-          <button>add</button>
-          <p>{blog.user && blog.user.username}</p>
+          <p>{url}</p>
+          <p>{likes}</p>
+          <button onClick={() => handleUpdateBlog(id)}>add</button>
+          <p>{user && user.username}</p>
         </div>
       }
       <button onClick={() => setDetails(!details)}>{details ? 'hide' : 'view'} details</button>
