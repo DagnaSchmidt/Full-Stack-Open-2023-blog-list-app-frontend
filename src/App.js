@@ -13,7 +13,7 @@ const App = () => {
   const [addNewBlogToggle, setAddNewBlogToggle] = useState(false);
 
   useEffect(() => {
-    getAll().then(blogs => setBlogs(blogs));
+    getAll().then(blogs => setBlogs(blogs.reverse()));
 
     const loggedUser = window.localStorage.getItem('loggedUser');
       if(loggedUser){
