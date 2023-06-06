@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Blog from './components/Blog';
-import { getAll, setToken, create, update } from './services/blogs';
+import { getAll, setToken } from './services/blogs';
 import LoginForm from './components/LoginForm';
 import AddNewBlogForm from './components/AddNewBlogForm';
 
@@ -13,7 +13,7 @@ const App = () => {
   const [addNewBlogToggle, setAddNewBlogToggle] = useState(false);
 
   useEffect(() => {
-    getAll().then(blogs => setBlogs(blogs));
+    getAll().then(blogs => setBlogs(blogs.reverse()));
 
     const loggedUser = window.localStorage.getItem('loggedUser');
       if(loggedUser){
@@ -43,7 +43,7 @@ const App = () => {
             }
             <button onClick={() => setAddNewBlogToggle(!addNewBlogToggle)}>{addNewBlogToggle ? 'cancel' : 'add new blog'}</button>
             <h2>blogs</h2>
-            {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+            {blogs.map(blog => <Blog key={blog.id} blog={blog} setBlogs={setBlogs} user={user} />)}
           </>
         :
           <LoginForm setToken={setToken} setUser={setUser} setErrorMessage={setErrorMessage} />
