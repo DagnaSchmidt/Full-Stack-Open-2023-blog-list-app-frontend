@@ -43,7 +43,7 @@ const App = () => {
             }
             <button onClick={() => setAddNewBlogToggle(!addNewBlogToggle)}>{addNewBlogToggle ? 'cancel' : 'add new blog'}</button>
             <h2>blogs</h2>
-            {blogs.map(blog => <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />)}
+            {blogs.map(blog => <Blog key={blog.id} blog={blog} setBlogs={setBlogs} user={user} />)}
           </>
         :
           <LoginForm setToken={setToken} setUser={setUser} setErrorMessage={setErrorMessage} />

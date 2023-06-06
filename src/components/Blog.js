@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import { update, getAll } from '../services/blogs';
+import { update, getAll, remove } from '../services/blogs';
 
-const Blog = ({blog, setBlogs}) => {
+const Blog = ({blog, setBlogs, user}) => {
   const [details, setDetails] = useState(false);
-  const {id, title, url, likes, user} = blog;
+  const {id, title, url, likes } = blog;
 
   const blogStyle = {
     padding: 8,
@@ -12,23 +12,45 @@ const Blog = ({blog, setBlogs}) => {
     marginBottom: 5
   };
 
+  const titleWithBtnStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12
+  }
+
   const handleUpdateBlog = async (id) => {
     await update(id);
-    getAll().then(blogs => setBlogs(blogs.reverse()));
+    const allBlogs = await getAll();
+    setBlogs(allBlogs.reverse());
   };
+
+  const handleDeleteBlog = async (id) => {
+    if (window.confirm(`Do you really want to delete ${title}?`)) {
+      await remove(id);
+      const allBlogs = await getAll();
+      setBlogs(allBlogs.reverse());
+    }
+  }
 
   return (
     <div style={blogStyle}>
-      <p>{title}</p>
+      <div style={titleWithBtnStyle}>
+        <p>{title}</p>
+        <button onClick={() => setDetails(!details)}>{details ? 'hide' : 'view'} details</button>
+      </div>
       {details &&
         <div>
           <p>{url}</p>
-          <p>{likes}</p>
-          <button onClick={() => handleUpdateBlog(id)}>add</button>
-          <p>{user && user.username}</p>
+          <div style={titleWithBtnStyle}>
+            <p>{likes}</p>
+            <button onClick={() => handleUpdateBlog(id)}>add</button>
+          </div>
+          <p>{blog.user && blog.user.username}</p>
+          {blog.user && user.name === blog.user.name &&
+            <button onClick={() => handleDeleteBlog(id)}>remove blog</button>
+          }
         </div>
       }
-      <button onClick={() => setDetails(!details)}>{details ? 'hide' : 'view'} details</button>
     </div>
   )
 }

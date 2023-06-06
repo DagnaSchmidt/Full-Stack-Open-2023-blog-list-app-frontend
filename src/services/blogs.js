@@ -27,5 +27,15 @@ const update = (id) => {
   return request.then(response => response.data);
 }
 
+const remove = (id) => {
+  const config = {
+    headers: {
+      Authorization: token 
+    },  
+  };
+  const request = axios.delete(`${baseUrl}/${id}`, config);
+  return request.then(response => response.data);
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export { getAll, setToken, create, update }
+export { getAll, setToken, create, update, remove }
