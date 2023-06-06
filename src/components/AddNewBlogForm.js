@@ -15,7 +15,7 @@ const AddNewBlogForm = ({setErrorMessage, setBlogs, setAddNewBlogToggle}) => {
           url: url
         };
         try {
-          const addedBlog = await create(newBlog);
+        await create(newBlog);
           setErrorMessage({title: `a new blog: ${title} successfully added!`, border: 'green'});
           setTimeout(() => {setErrorMessage(null)}, 5000);
           const allBlogs = await getAll();

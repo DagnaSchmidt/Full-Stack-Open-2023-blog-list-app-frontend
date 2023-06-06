@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import { update, getAll, remove } from '../services/blogs';
+import PropTypes from 'prop-types';
 
 const Blog = ({blog, setBlogs, user}) => {
   const [details, setDetails] = useState(false);
-  const {id, title, url, likes } = blog;
+  const {id, title, url, likes, author } = blog;
 
   const blogStyle = {
     padding: 8,
@@ -40,6 +41,7 @@ const Blog = ({blog, setBlogs, user}) => {
       </div>
       {details &&
         <div>
+          <p>{author}</p>
           <p>{url}</p>
           <div style={titleWithBtnStyle}>
             <p>{likes}</p>
@@ -55,4 +57,10 @@ const Blog = ({blog, setBlogs, user}) => {
   )
 }
 
-export default Blog
+export default Blog;
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  setBlogs: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
+}
