@@ -35,6 +35,7 @@ const AddNewBlogForm = ({setErrorMessage, setBlogs, setAddNewBlogToggle}) => {
                   type='text'
                   value={title}
                   name='title'
+                  placeholder='title'
                   onChange={({target}) => setTitle(target.value)}
                 />
               <label>Author</label>
@@ -42,6 +43,7 @@ const AddNewBlogForm = ({setErrorMessage, setBlogs, setAddNewBlogToggle}) => {
                   type='text'
                   value={author}
                   name='author'
+                  placeholder='author'
                   onChange={({target}) => setAuthor(target.value)}
                 />
               <label>URL</label>
@@ -49,6 +51,7 @@ const AddNewBlogForm = ({setErrorMessage, setBlogs, setAddNewBlogToggle}) => {
                   type='text'
                   value={url}
                   name='url'
+                  placeholder='url'
                   onChange={({target}) => setUrl(target.value)}
                 />
                 <button>add</button>
