@@ -7,12 +7,22 @@ describe('Blog App', function() {
     cy.contains('login');
   });
 
-  it('login form ', function() {
+  it('login form success', function() {
     cy.get('#username').type('Dagna');
     cy.get('#password').type('password');
     cy.get('#loginBtn').click();
 
     cy.contains('Dagna logged in');
+  });
+
+  it('login form failure', function() {
+    cy.get('#username').type('D');
+    cy.get('#password').type('p');
+    cy.get('#loginBtn').click();
+
+    cy.contains('login');
+    cy.get('#errorMessage', { timeout: 10000 }).should('be.visible', 'have-css', 'border-color', 'rgb(255, 0, 0)');
+
   });
 
 });
