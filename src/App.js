@@ -32,7 +32,7 @@ const App = () => {
   return (
     <div>
       {errorMessage &&
-          <div id='errorMessage' style={{padding: '6px',borderStyle: 'solid', borderWidth: '3px', borderColor: errorMessage.border}}>{errorMessage.title}</div>
+          <div id='errorMessage' style={{padding: '6px', borderStyle: 'solid', borderWidth: '3px', borderColor: errorMessage.border}}>{errorMessage.title}</div>
       }
         {user ?
           <>
