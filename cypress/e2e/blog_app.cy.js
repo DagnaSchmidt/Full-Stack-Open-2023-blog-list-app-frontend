@@ -71,9 +71,16 @@ describe('Blog App', function() {
         cy.contains('add');
         cy.get('#addBtn').click();
         cy.contains('1');
-      })
+      });
+
+      it('user who created a blog can delete it', function() {
+        cy.get('#detailsBtn').click();
+        cy.contains('add');
+        cy.contains('remove blog');
+        cy.get('#deleteBtn').click();
+        cy.get('Det forsta mordet').should('not.exist');
+      });
+
     });
-
   });
-
 });
