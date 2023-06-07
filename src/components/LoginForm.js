@@ -16,11 +16,11 @@ const LoginForm = ({setToken, setUser, setErrorMessage}) => {
           setUsername('');
           setPassword('');
           setErrorMessage({title: 'user successfully logged in', border: 'green'});
-          setTimeout(() => {setErrorMessage(null)}, 5000);
+          setTimeout(() => {setErrorMessage(null);}, 5000);
         }
         catch (exception) {
           setErrorMessage({title: 'Wrong credentials', border: 'red'});
-          setTimeout(() => {setErrorMessage(null)}, 5000);
+          setTimeout(() => {setErrorMessage(null);}, 5000);
         }
       };
 
@@ -34,6 +34,7 @@ const LoginForm = ({setToken, setUser, setErrorMessage}) => {
                   type='text'
                   value={username}
                   name='username'
+                  id='username'
                   onChange={({target}) => setUsername(target.value)}
                 />
               </div>
@@ -43,13 +44,14 @@ const LoginForm = ({setToken, setUser, setErrorMessage}) => {
                   type='password'
                   value={password}
                   name='password'
+                  id='password'
                   onChange={({target}) => setPassword(target.value)}
                 />
               </div>
-              <button>login</button>
+              <button id='loginBtn'>login</button>
             </form>
         </>
-  )
-}
+  );
+};
 
 export default LoginForm;

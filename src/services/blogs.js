@@ -5,7 +5,7 @@ let token = null;
 
 const setToken = newToken => {
   token = `Bearer ${newToken}`;
-}
+};
 
 const getAll = () => {
   const request = axios.get(baseUrl);
@@ -25,7 +25,7 @@ const create = async newObject => {
 const update = (id) => {
   const request = axios.put(`${baseUrl}/${id}`);
   return request.then(response => response.data);
-}
+};
 
 const remove = (id) => {
   const config = {
@@ -35,7 +35,7 @@ const remove = (id) => {
   };
   const request = axios.delete(`${baseUrl}/${id}`, config);
   return request.then(response => response.data);
-}
+};
 
-// eslint-disable-next-line import/no-anonymous-default-export
+// eslint-disable-next-line
 export { getAll, setToken, create, update, remove }
