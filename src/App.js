@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import Blog from './components/Blog';
-import { getAll, setToken } from './services/blogs';
-import LoginForm from './components/LoginForm';
-import AddNewBlogForm from './components/AddNewBlogForm';
+import Blog from './components/Blog.js';
+import { getAll, setToken } from './services/blogs.js';
+import LoginForm from './components/LoginForm.js';
+import AddNewBlogForm from './components/AddNewBlogForm.js';
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(null);
