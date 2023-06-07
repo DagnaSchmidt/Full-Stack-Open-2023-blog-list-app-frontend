@@ -32,12 +32,12 @@ const App = () => {
   return (
     <div>
       {errorMessage &&
-          <div style={{padding: '6px',borderStyle: 'solid', borderWidth: '3px', borderColor: errorMessage.border}}>{errorMessage.title}</div>
+          <div id='errorMessage' style={{padding: '6px', borderStyle: 'solid', borderWidth: '3px', borderColor: errorMessage.border}}>{errorMessage.title}</div>
       }
         {user ?
           <>
             <h2>user</h2>
-            <div><h5>{user.username} logged in</h5><button onClick={() => handleLogout()}>log out</button></div>
+            <div><h5>{user.username} logged in</h5><button id='logoutBtn' onClick={() => handleLogout()}>log out</button></div>
             {addNewBlogToggle &&
                 <AddNewBlogForm setErrorMessage={setErrorMessage} setBlogs={setBlogs} setAddNewBlogToggle={setAddNewBlogToggle} />
             }

@@ -37,19 +37,19 @@ const Blog = ({blog, setBlogs, user}) => {
   return (
     <div style={blogStyle} className='blog'>
       <div style={titleWithBtnStyle}>
-        <p>{title}</p><p>{author}</p>
-        <button onClick={() => setDetails(!details)}>{details ? 'hide' : 'view'} details</button>
+        <p className='title'>{title}</p><p>{author}</p>
+        <button className='detailsBtn' id='detailsBtn' onClick={() => setDetails(!details)}>{details ? 'hide' : 'view'} details</button>
       </div>
       {details &&
         <div>
           <p>{url}</p>
           <div style={titleWithBtnStyle}>
-            <p>{likes}</p>
-            <button onClick={() => handleUpdateBlog(id)}>add</button>
+            <p id='likes'>{likes}</p>
+            <button className='addBtn' id='addBtn' onClick={() => handleUpdateBlog(id)}>add</button>
           </div>
-          <p>{blog.user && blog.user.username}</p>
-          {blog.user && user.name === blog.user.name &&
-            <button onClick={() => handleDeleteBlog(id)}>remove blog</button>
+          <p>{blog.user.username}</p>
+          {user.username === blog.user.username &&
+            <button id='deleteBtn' onClick={() => handleDeleteBlog(id)}>remove blog</button>
           }
         </div>
       }
