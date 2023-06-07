@@ -17,14 +17,14 @@ const AddNewBlogForm = ({setErrorMessage, setBlogs, setAddNewBlogToggle}) => {
         try {
         await create(newBlog);
           setErrorMessage({title: `a new blog: ${title} successfully added!`, border: 'green'});
-          setTimeout(() => {setErrorMessage(null)}, 5000);
+          setTimeout(() => {setErrorMessage(null);}, 5000);
           const allBlogs = await getAll();
           setBlogs(allBlogs.reverse());
           setAddNewBlogToggle(false);
         }
         catch (exception) {
           setErrorMessage({title: 'failed to add blog', border: 'red'});
-          setTimeout(() => {setErrorMessage(null)}, 5000);
+          setTimeout(() => {setErrorMessage(null);}, 5000);
         }
       };
 
@@ -56,7 +56,7 @@ const AddNewBlogForm = ({setErrorMessage, setBlogs, setAddNewBlogToggle}) => {
                 />
                 <button>add</button>
             </form>
-  )
-}
+  );
+};
 
 export default AddNewBlogForm;

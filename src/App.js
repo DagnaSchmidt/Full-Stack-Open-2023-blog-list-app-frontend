@@ -20,7 +20,7 @@ const App = () => {
         const newUser = JSON.parse(loggedUser);
         setUser(newUser);
         setToken(newUser.token);
-      };
+      }
     // eslint-disable-next-line
   }, []);
 
@@ -49,7 +49,7 @@ const App = () => {
           <LoginForm setToken={setToken} setUser={setUser} setErrorMessage={setErrorMessage} />
         }
     </div>
-  )
+  );
 };
 
 export default App;

@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import React, {useState} from 'react';
 import { update, getAll, remove } from '../services/blogs.js';
 import PropTypes from 'prop-types';
@@ -17,7 +18,7 @@ const Blog = ({blog, setBlogs, user}) => {
     display: 'flex',
     alignItems: 'center',
     gap: 12
-  }
+  };
 
   const handleUpdateBlog = async (id) => {
     await update(id);
@@ -31,7 +32,7 @@ const Blog = ({blog, setBlogs, user}) => {
       const allBlogs = await getAll();
       setBlogs(allBlogs.reverse());
     }
-  }
+  };
 
   return (
     <div style={blogStyle} className='blog'>
@@ -53,8 +54,8 @@ const Blog = ({blog, setBlogs, user}) => {
         </div>
       }
     </div>
-  )
-}
+  );
+};
 
 export default Blog;
 
@@ -62,4 +63,4 @@ Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   // setBlogs: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired
-}
+};
