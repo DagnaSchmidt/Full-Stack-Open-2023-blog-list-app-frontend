@@ -47,6 +47,33 @@ describe('Blog App', function() {
       cy.get('#errorMessage', { timeout: 10000 }).contains('a new blog: Det forsta mordet successfully added!');
       cy.contains('Det forsta mordet');
     })
+
+    describe('when there is one blog', function() {
+      beforeEach(function() {
+        cy.contains('add new blog').click();
+        cy.get('#title').type('Det forsta mordet');
+        cy.get('#author').type('John Lawrence Reynolds');
+        cy.get('#url').type('someurl');
+        cy.get('#addBtn').click();
+      });
+  
+      it('user can view and hide details of a blog', function() {
+        cy.contains('view details');
+        cy.get('#detailsBtn').click();
+        cy.contains('someurl');
+        cy.contains('hide details');
+        cy.get('#detailsBtn').click();
+        cy.contains('view details');
+      });
+
+      it('user can like a blog', function() {
+        cy.get('#detailsBtn').click();
+        cy.contains('add');
+        cy.get('#addBtn').click();
+        cy.contains('1');
+      })
+    });
+
   });
 
 });

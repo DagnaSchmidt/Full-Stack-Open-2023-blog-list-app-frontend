@@ -38,14 +38,14 @@ const Blog = ({blog, setBlogs, user}) => {
     <div style={blogStyle} className='blog'>
       <div style={titleWithBtnStyle}>
         <p>{title}</p><p>{author}</p>
-        <button onClick={() => setDetails(!details)}>{details ? 'hide' : 'view'} details</button>
+        <button id='detailsBtn' onClick={() => setDetails(!details)}>{details ? 'hide' : 'view'} details</button>
       </div>
       {details &&
         <div>
           <p>{url}</p>
           <div style={titleWithBtnStyle}>
             <p>{likes}</p>
-            <button onClick={() => handleUpdateBlog(id)}>add</button>
+            <button id='addBtn' onClick={() => handleUpdateBlog(id)}>add</button>
           </div>
           <p>{blog.user && blog.user.username}</p>
           {blog.user && user.name === blog.user.name &&
