@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { update, getAll, remove } from '../services/blogs';
+import { update, getAll, remove } from '../services/blogs.js';
 import PropTypes from 'prop-types';
 
 const Blog = ({blog, setBlogs, user}) => {
@@ -34,14 +34,13 @@ const Blog = ({blog, setBlogs, user}) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       <div style={titleWithBtnStyle}>
-        <p>{title}</p>
+        <p>{title}</p><p>{author}</p>
         <button onClick={() => setDetails(!details)}>{details ? 'hide' : 'view'} details</button>
       </div>
       {details &&
         <div>
-          <p>{author}</p>
           <p>{url}</p>
           <div style={titleWithBtnStyle}>
             <p>{likes}</p>
@@ -61,6 +60,6 @@ export default Blog;
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  setBlogs: PropTypes.func.isRequired,
+  // setBlogs: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired
 }
