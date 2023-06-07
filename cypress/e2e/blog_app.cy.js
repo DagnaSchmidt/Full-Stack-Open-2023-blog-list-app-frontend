@@ -81,6 +81,50 @@ describe('Blog App', function() {
         cy.get('Det forsta mordet').should('not.exist');
       });
 
+      it('user who did not create a blog, can not see remove blog btn', function() {
+        cy.get('#logoutBtn', { timeout: 10000 }).click();
+        const user2 = {         
+          username: 'Ola',      
+          password: 'password2'
+        };
+        cy.request('POST', 'http://localhost:3000/api/users/', user2);
+        cy.get('#username').type('Ola');
+        cy.get('#password').type('password2');
+        cy.get('#loginBtn').click();
+        cy.get('#detailsBtn').click();
+        cy.get('#deleteBtn').should('not.exist');
+      });
     });
+
+    describe('when there are 3 blogs', function() {
+      beforeEach(function() {
+        cy.contains('add new blog').click();
+        cy.get('#title').type('Det forsta mordet');
+        cy.get('#author').type('John Lawrence Reynolds');
+        cy.get('#url').type('someurl');
+        cy.get('#addBtn').click();
+
+        cy.contains('add new blog').click();
+        cy.get('#title').type('Hjalp jag heter Zbigniew');
+        cy.get('#author').type('Zbigniew Kuklarz');
+        cy.get('#url').type('someurl');
+        cy.get('#addBtn').click();
+
+        cy.contains('add new blog').click();
+        cy.get('#title').type('Hemligheten i Helmersbruk');
+        cy.get('#author').type('Eva Frantz');
+        cy.get('#url').type('someurl');
+        cy.get('#addBtn').click();
+      });
+
+      it('check if blogs order is by most likes', function() {
+        cy.get('.detailsBtn').eq(2).click();
+        cy.get('#addBtn').click();
+        cy.get('.title').eq(0).contains('Det forsta mordet');
+      });
+
+    });
+    
   });
+
 });

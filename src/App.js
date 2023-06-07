@@ -37,7 +37,7 @@ const App = () => {
         {user ?
           <>
             <h2>user</h2>
-            <div><h5>{user.username} logged in</h5><button onClick={() => handleLogout()}>log out</button></div>
+            <div><h5>{user.username} logged in</h5><button id='logoutBtn' onClick={() => handleLogout()}>log out</button></div>
             {addNewBlogToggle &&
                 <AddNewBlogForm setErrorMessage={setErrorMessage} setBlogs={setBlogs} setAddNewBlogToggle={setAddNewBlogToggle} />
             }
