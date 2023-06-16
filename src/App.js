@@ -7,8 +7,10 @@ import AddNewBlogForm from './components/AddNewBlogForm.js';
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [blogs, setBlogs] = useState([]);
+  console.log(blogs);
 
   const [user, setUser] = useState(null);
+  console.log(user);
 
   const [addNewBlogToggle, setAddNewBlogToggle] = useState(false);
 
