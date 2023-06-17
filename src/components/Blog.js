@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import { update, getAll, remove } from '../services/blogs.js';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { showSuccessMessage } from '../reducers/notificationReducer.js';
+import { deleteBlog, voteOnBlog } from '../reducers/blogsReducer.js';
 
-const Blog = ({blog, setBlogs, user}) => {
+const Blog = ({blog, user}) => {
   const dispatch = useDispatch();
   const [details, setDetails] = useState(false);
   const {id, title, url, likes, author } = blog;
@@ -23,17 +23,13 @@ const Blog = ({blog, setBlogs, user}) => {
   };
 
   const handleUpdateBlog = async (id) => {
-    await update(id);
-    const allBlogs = await getAll();
-    setBlogs(allBlogs.reverse());
+    dispatch(voteOnBlog(id));
     dispatch(showSuccessMessage(`you voted on ${title}`));
   };
 
   const handleDeleteBlog = async (id) => {
     if (window.confirm(`Do you really want to delete ${title}?`)) {
-      await remove(id);
-      const allBlogs = await getAll();
-      setBlogs(allBlogs.reverse());
+      dispatch(deleteBlog(id));
       dispatch(showSuccessMessage(`you deleted ${title}`));
     }
   };
