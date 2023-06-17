@@ -3,9 +3,9 @@ import Blog from './components/Blog.js';
 import { getAll, setToken } from './services/blogs.js';
 import LoginForm from './components/LoginForm.js';
 import AddNewBlogForm from './components/AddNewBlogForm.js';
+import Notification from './components/Notification.js';
 
 const App = () => {
-  const [errorMessage, setErrorMessage] = useState(null);
   const [blogs, setBlogs] = useState([]);
   console.log(blogs);
 
@@ -33,22 +33,20 @@ const App = () => {
 
   return (
     <div>
-      {errorMessage &&
-          <div id='errorMessage' style={{padding: '6px', borderStyle: 'solid', borderWidth: '3px', borderColor: errorMessage.border}}>{errorMessage.title}</div>
-      }
+      <Notification />
         {user ?
           <>
             <h2>user</h2>
             <div><h5>{user.username} logged in</h5><button id='logoutBtn' onClick={() => handleLogout()}>log out</button></div>
             {addNewBlogToggle &&
-                <AddNewBlogForm setErrorMessage={setErrorMessage} setBlogs={setBlogs} setAddNewBlogToggle={setAddNewBlogToggle} />
+                <AddNewBlogForm setBlogs={setBlogs} setAddNewBlogToggle={setAddNewBlogToggle} />
             }
             <button onClick={() => setAddNewBlogToggle(!addNewBlogToggle)}>{addNewBlogToggle ? 'cancel' : 'add new blog'}</button>
             <h2>blogs</h2>
             {blogs.map(blog => <Blog key={blog.id} blog={blog} setBlogs={setBlogs} user={user} />)}
           </>
         :
-          <LoginForm setToken={setToken} setUser={setUser} setErrorMessage={setErrorMessage} />
+          <LoginForm setToken={setToken} setUser={setUser} />
         }
     </div>
   );

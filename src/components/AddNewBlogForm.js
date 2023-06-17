@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
 import { getAll, create } from '../services/blogs.js';
+import { useDispatch } from 'react-redux';
+import { showSuccessMessage, showErrorMessage} from '../reducers/notificationReducer.js';
 
-const AddNewBlogForm = ({setErrorMessage, setBlogs, setAddNewBlogToggle}) => {
+const AddNewBlogForm = ({setBlogs, setAddNewBlogToggle}) => {
+    const dispatch = useDispatch();
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [url, setUrl] = useState('');
@@ -16,15 +19,13 @@ const AddNewBlogForm = ({setErrorMessage, setBlogs, setAddNewBlogToggle}) => {
         };
         try {
         await create(newBlog);
-          setErrorMessage({title: `a new blog: ${title} successfully added!`, border: 'green'});
-          setTimeout(() => {setErrorMessage(null);}, 5000);
           const allBlogs = await getAll();
           setBlogs(allBlogs.reverse());
           setAddNewBlogToggle(false);
+          dispatch(showSuccessMessage(`a new blog: ${title} successfully added!`));
         }
         catch (exception) {
-          setErrorMessage({title: 'failed to add blog', border: 'red'});
-          setTimeout(() => {setErrorMessage(null);}, 5000);
+          dispatch(showErrorMessage('failed to add a blog'));
         }
       };
 

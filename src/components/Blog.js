@@ -1,9 +1,11 @@
-// eslint-disable-next-line
 import React, {useState} from 'react';
 import { update, getAll, remove } from '../services/blogs.js';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { showSuccessMessage } from '../reducers/notificationReducer.js';
 
 const Blog = ({blog, setBlogs, user}) => {
+  const dispatch = useDispatch();
   const [details, setDetails] = useState(false);
   const {id, title, url, likes, author } = blog;
 
@@ -24,6 +26,7 @@ const Blog = ({blog, setBlogs, user}) => {
     await update(id);
     const allBlogs = await getAll();
     setBlogs(allBlogs.reverse());
+    dispatch(showSuccessMessage(`you voted on ${title}`));
   };
 
   const handleDeleteBlog = async (id) => {
@@ -31,6 +34,7 @@ const Blog = ({blog, setBlogs, user}) => {
       await remove(id);
       const allBlogs = await getAll();
       setBlogs(allBlogs.reverse());
+      dispatch(showSuccessMessage(`you deleted ${title}`));
     }
   };
 
@@ -42,12 +46,12 @@ const Blog = ({blog, setBlogs, user}) => {
       </div>
       {details &&
         <div>
-          <p>{url}</p>
+          <p>URL: {url}</p>
           <div style={titleWithBtnStyle}>
-            <p id='likes'>{likes}</p>
-            <button className='addBtn' id='addBtn' onClick={() => handleUpdateBlog(id)}>add</button>
+            <p id='likes'>Votes: {likes}</p>
+            <button className='addBtn' id='addBtn' onClick={() => handleUpdateBlog(id)}>add vote</button>
           </div>
-          <p>{blog.user.username}</p>
+          <p>Author of post: {blog.user.username}</p>
           {user.username === blog.user.username &&
             <button id='deleteBtn' onClick={() => handleDeleteBlog(id)}>remove blog</button>
           }
