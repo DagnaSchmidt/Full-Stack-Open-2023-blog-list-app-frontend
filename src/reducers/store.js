@@ -1,12 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-// import anecdotesReducer from './reducers/anecdotesReducer';
-// import filterReducer from './reducers/filterReducer';
+import errorMessageReducer from './errorMessageReducer.js';
 // import notificationReducer from './reducers/notificationReducer';
 
 export const store = configureStore({
     reducer: {
-        anecdotes: anecdotesReducer,
-        filter: filterReducer,
-        notification: notificationReducer
+        error: errorMessageReducer
     }
 });
