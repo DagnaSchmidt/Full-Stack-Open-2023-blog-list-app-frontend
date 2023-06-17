@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import Blog from './components/Blog.js';
-import { setToken } from './services/blogs.js';
 import LoginForm from './components/LoginForm.js';
 import AddNewBlogForm from './components/AddNewBlogForm.js';
 import Notification from './components/Notification.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { initializeBlogs } from './reducers/blogsReducer.js';
+import { removeUser } from './reducers/userReducer.js';
 
 const App = () => {
   const dispatch = useDispatch();
   const blogs = useSelector(state => state.blogs);
   console.log(blogs);
 
-  const [user, setUser] = useState(null);
+  const user = useSelector(state => state.user);
   console.log(user);
 
   const [addNewBlogToggle, setAddNewBlogToggle] = useState(false);
@@ -21,20 +21,8 @@ const App = () => {
     dispatch(initializeBlogs());
   }, [dispatch]);
 
-  useEffect(() => {
-
-    const loggedUser = window.localStorage.getItem('loggedUser');
-      if(loggedUser){
-        const newUser = JSON.parse(loggedUser);
-        setUser(newUser);
-        setToken(newUser.token);
-      }
-    // eslint-disable-next-line
-  }, []);
-
   const handleLogout = () => {
-    setUser(null);
-    window.localStorage.clear();
+    dispatch(removeUser());
   };
 
   return (
@@ -52,7 +40,7 @@ const App = () => {
             {blogs.map(blog => <Blog key={blog.id} blog={blog} user={user} />)}
           </>
         :
-          <LoginForm setToken={setToken} setUser={setUser} />
+          <LoginForm />
         }
     </div>
   );

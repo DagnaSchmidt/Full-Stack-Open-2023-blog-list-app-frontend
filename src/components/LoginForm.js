@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {login} from '../services/login.js';
 import { useDispatch } from 'react-redux';
 import { showSuccessMessage, showErrorMessage } from '../reducers/notificationReducer.js';
+import { saveUser } from '../reducers/userReducer.js';
 
-const LoginForm = ({setToken, setUser}) => {
+const LoginForm = () => {
     const dispatch = useDispatch();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -12,10 +12,11 @@ const LoginForm = ({setToken, setUser}) => {
         e.preventDefault();
     
         try {
-          const user = await login({username, password});
-          window.localStorage.setItem('loggedUser', JSON.stringify(user));
-          setToken(user.token);
-          setUser(user);
+          dispatch(saveUser({username, password}));
+          // const user = await login({username, password});
+          // window.localStorage.setItem('loggedUser', JSON.stringify(user));
+          // setToken(user.token);
+          // setUser(user);
           setUsername('');
           setPassword('');
           dispatch(showSuccessMessage(`user ${username} successfully logged in`));
