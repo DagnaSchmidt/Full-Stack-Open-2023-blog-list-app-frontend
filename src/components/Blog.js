@@ -1,9 +1,11 @@
-// eslint-disable-next-line
 import React, {useState} from 'react';
 import { update, getAll, remove } from '../services/blogs.js';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { showSuccessMessage } from '../reducers/notificationReducer.js';
 
 const Blog = ({blog, setBlogs, user}) => {
+  const dispatch = useDispatch();
   const [details, setDetails] = useState(false);
   const {id, title, url, likes, author } = blog;
 
@@ -24,6 +26,7 @@ const Blog = ({blog, setBlogs, user}) => {
     await update(id);
     const allBlogs = await getAll();
     setBlogs(allBlogs.reverse());
+    dispatch(showSuccessMessage(`you voted on ${title}`));
   };
 
   const handleDeleteBlog = async (id) => {
@@ -31,6 +34,7 @@ const Blog = ({blog, setBlogs, user}) => {
       await remove(id);
       const allBlogs = await getAll();
       setBlogs(allBlogs.reverse());
+      dispatch(showSuccessMessage(`you deleted ${title}`));
     }
   };
 
