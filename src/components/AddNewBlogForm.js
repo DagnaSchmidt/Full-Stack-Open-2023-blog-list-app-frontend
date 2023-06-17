@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import { getAll, create } from '../services/blogs.js';
 import { useDispatch } from 'react-redux';
 import { showSuccessMessage, showErrorMessage} from '../reducers/notificationReducer.js';
+import { addNewBlog } from '../reducers/blogsReducer.js';
 
-const AddNewBlogForm = ({setBlogs, setAddNewBlogToggle}) => {
+const AddNewBlogForm = ({setAddNewBlogToggle}) => {
     const dispatch = useDispatch();
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
@@ -18,9 +18,7 @@ const AddNewBlogForm = ({setBlogs, setAddNewBlogToggle}) => {
           url: url
         };
         try {
-        await create(newBlog);
-          const allBlogs = await getAll();
-          setBlogs(allBlogs.reverse());
+          dispatch(addNewBlog(newBlog));
           setAddNewBlogToggle(false);
           dispatch(showSuccessMessage(`a new blog: ${title} successfully added!`));
         }

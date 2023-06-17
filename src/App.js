@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import Blog from './components/Blog.js';
-import { getAll, setToken } from './services/blogs.js';
+import { setToken } from './services/blogs.js';
 import LoginForm from './components/LoginForm.js';
 import AddNewBlogForm from './components/AddNewBlogForm.js';
 import Notification from './components/Notification.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { initializeBlogs } from './reducers/blogsReducer.js';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  const dispatch = useDispatch();
+  const blogs = useSelector(state => state.blogs);
   console.log(blogs);
 
   const [user, setUser] = useState(null);
@@ -15,7 +18,10 @@ const App = () => {
   const [addNewBlogToggle, setAddNewBlogToggle] = useState(false);
 
   useEffect(() => {
-    getAll().then(blogs => setBlogs(blogs.reverse()));
+    dispatch(initializeBlogs());
+  }, [dispatch]);
+
+  useEffect(() => {
 
     const loggedUser = window.localStorage.getItem('loggedUser');
       if(loggedUser){
@@ -39,11 +45,11 @@ const App = () => {
             <h2>user</h2>
             <div><h5>{user.username} logged in</h5><button id='logoutBtn' onClick={() => handleLogout()}>log out</button></div>
             {addNewBlogToggle &&
-                <AddNewBlogForm setBlogs={setBlogs} setAddNewBlogToggle={setAddNewBlogToggle} />
+                <AddNewBlogForm setAddNewBlogToggle={setAddNewBlogToggle} />
             }
             <button onClick={() => setAddNewBlogToggle(!addNewBlogToggle)}>{addNewBlogToggle ? 'cancel' : 'add new blog'}</button>
             <h2>blogs</h2>
-            {blogs.map(blog => <Blog key={blog.id} blog={blog} setBlogs={setBlogs} user={user} />)}
+            {blogs.map(blog => <Blog key={blog.id} blog={blog} user={user} />)}
           </>
         :
           <LoginForm setToken={setToken} setUser={setUser} />
