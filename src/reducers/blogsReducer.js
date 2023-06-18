@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getAll, create, remove, update } from '../services/blogs.js';
+import { getAll, create, remove, update, updateComment } from '../services/blogs.js';
 
 const blogsSlice = createSlice({
     name: 'blogs',
@@ -28,6 +28,16 @@ const blogsSlice = createSlice({
                 }
             });
             return newState;
+        },
+        updateBlogComments(state, action) {
+            const newState = state.map(i => {
+                if(i.id !== action.payload.id){
+                    return i;
+                }else{
+                    return action.payload;
+                }
+            });
+            return newState;
         }
     }
 });
@@ -39,7 +49,7 @@ export const initializeBlogs = () => {
     };
 };
 
-export const addNewBlog =  (content) => {
+export const addNewBlog = (content) => {
     return async dispatch => {
         const newBlog = await create(content);
         dispatch(appendBlog(newBlog));
@@ -60,5 +70,12 @@ export const voteOnBlog = (id) => {
     };
 };
 
-export const { setAllBlogs, appendBlog, removeBlog, updateBlog } = blogsSlice.actions;
+export const addComment = (id, newComment) => {
+    return async dispatch => {
+        const updatedBlog = await updateComment(id, newComment);
+        dispatch(updateBlogComments(updatedBlog));
+    };
+};
+
+export const { setAllBlogs, appendBlog, removeBlog, updateBlog, updateBlogComments } = blogsSlice.actions;
 export default blogsSlice.reducer;

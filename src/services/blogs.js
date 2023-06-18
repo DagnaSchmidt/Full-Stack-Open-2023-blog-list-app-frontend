@@ -37,5 +37,10 @@ const remove = (id) => {
   return request.then(response => response.data);
 };
 
+const updateComment = (id, newComment) => {
+  const request = axios.put(`${baseUrl}/${id}/comments`, newComment);
+  return request.then(response => response.data);
+};
+
 // eslint-disable-next-line
-export { getAll, setToken, create, update, remove }
+export { getAll, setToken, create, update, remove, updateComment }

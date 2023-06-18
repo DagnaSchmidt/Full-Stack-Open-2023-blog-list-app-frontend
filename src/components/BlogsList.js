@@ -7,7 +7,7 @@ const BlogsList = () => {
 
   return (
     <ul>
-        {blogs.map(i => <li><Link to={`/blogs/${i.id}`} >{i.title}</Link></li>)}
+        {blogs.map(i => <li key={i.id}><Link to={`/blogs/${i.id}`}>{i.title}</Link></li>)}
     </ul>
   );
 };
