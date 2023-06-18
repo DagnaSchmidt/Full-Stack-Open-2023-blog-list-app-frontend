@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { showSuccessMessage, showErrorMessage } from '../reducers/notificationReducer.js';
 import { saveUser } from '../reducers/userReducer.js';
 import { useNavigate } from 'react-router-dom';
+import { addBtn, blogContainer, inputContainer } from '../styles/styles.js';
 
 const LoginForm = () => {
     const dispatch = useDispatch();
@@ -27,10 +28,10 @@ const LoginForm = () => {
       };
 
   return (
-        <>
+        <div style={blogContainer}>
             <h2>login</h2>
             <form onSubmit={handleLogin}>
-              <div>
+              <div style={inputContainer}>
                 <label>username</label>
                 <input
                   type='text'
@@ -40,7 +41,7 @@ const LoginForm = () => {
                   onChange={({target}) => setUsername(target.value)}
                 />
               </div>
-              <div>
+              <div style={inputContainer}>
                 <label>password</label>
                 <input
                   type='password'
@@ -50,9 +51,9 @@ const LoginForm = () => {
                   onChange={({target}) => setPassword(target.value)}
                 />
               </div>
-              <button id='loginBtn'>login</button>
+              <button style={addBtn} id='loginBtn'>login</button>
             </form>
-        </>
+        </div>
   );
 };
 

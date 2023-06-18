@@ -1,19 +1,17 @@
-import React, {useState} from 'react';
+import React from 'react';
 import AddNewBlogForm from './AddNewBlogForm.js';
 import BlogsList from './BlogsList.js';
+import { blogContainer, blogTitleContainer } from '../styles/styles.js';
 
 const Main = () => {
-    const [addNewBlogToggle, setAddNewBlogToggle] = useState(false);
-
   return (
-    <div>
-        <h2>Blogs</h2>
-        {addNewBlogToggle &&
-            <AddNewBlogForm setAddNewBlogToggle={setAddNewBlogToggle} />
-        }
-        <button onClick={() => setAddNewBlogToggle(!addNewBlogToggle)}>{addNewBlogToggle ? 'cancel' : 'add new blog'}</button>
-        <h5>List of blogs:</h5>
-        <BlogsList />
+    <div style={blogContainer}>
+        <h2 style={blogTitleContainer}>Blogs</h2>
+        <AddNewBlogForm />
+        <div style={blogContainer}>
+          <h3>List of blogs:</h3>
+          <BlogsList />
+        </div>
     </div>
   );
 };
