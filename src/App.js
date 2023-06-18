@@ -1,48 +1,55 @@
-import { useState, useEffect } from 'react';
-import Blog from './components/Blog.js';
+import { useEffect } from 'react';
 import LoginForm from './components/LoginForm.js';
-import AddNewBlogForm from './components/AddNewBlogForm.js';
 import Notification from './components/Notification.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { initializeBlogs } from './reducers/blogsReducer.js';
-import { removeUser } from './reducers/userReducer.js';
+import { Routes, Route, useNavigate, useMatch } from 'react-router-dom';
+import Navigation from './components/Navigation.js';
+import Main from './components/Main.js';
+import Users from './components/Users.js';
+import User from './components/User.js';
+import Blog from './components/Blog.js';
+import { getUsers } from './reducers/usersReducer.js';
 
 const App = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const blogs = useSelector(state => state.blogs);
   console.log(blogs);
+
+  const matchBlog = useMatch('blogs/:id');
+  const displayedBlog = matchBlog ? blogs.find(i => i.id === matchBlog.params.id) : null;
 
   const user = useSelector(state => state.user);
   console.log(user);
 
-  const [addNewBlogToggle, setAddNewBlogToggle] = useState(false);
+  const users = useSelector(state => state.users);
+  console.log(users);
+
+  const match = useMatch('users/:id');
+  const displayedUser = match ? users.find(i => i.id === match.params.id) : null;
 
   useEffect(() => {
     dispatch(initializeBlogs());
+    if(user === null){
+      navigate('/login');
+    }
+    dispatch(getUsers());
   }, [dispatch]);
 
-  const handleLogout = () => {
-    dispatch(removeUser());
-  };
-
   return (
-    <div>
+    <>
+      <Navigation />
       <Notification />
-        {user ?
-          <>
-            <h2>user</h2>
-            <div><h5>{user.username} logged in</h5><button id='logoutBtn' onClick={() => handleLogout()}>log out</button></div>
-            {addNewBlogToggle &&
-                <AddNewBlogForm setAddNewBlogToggle={setAddNewBlogToggle} />
-            }
-            <button onClick={() => setAddNewBlogToggle(!addNewBlogToggle)}>{addNewBlogToggle ? 'cancel' : 'add new blog'}</button>
-            <h2>blogs</h2>
-            {blogs.map(blog => <Blog key={blog.id} blog={blog} user={user} />)}
-          </>
-        :
-          <LoginForm />
-        }
-    </div>
+        <Routes>
+            <Route path='/' element={<Main />} />
+            <Route path='/users' element={<Users />} />
+            <Route path='/login' element={<LoginForm />} />
+            <Route path='/users/:id' element={<User displayedUser={displayedUser} />} />
+            <Route path='/blogs/:id' element={<Blog displayedBlog={displayedBlog}  />} />
+        </Routes>
+    </>
   );
 };
 

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { useDispatch } from 'react-redux';
 import { showSuccessMessage, showErrorMessage} from '../reducers/notificationReducer.js';
 import { addNewBlog } from '../reducers/blogsReducer.js';
+import { addBtn, inputContainer } from '../styles/styles.js';
 
 const AddNewBlogForm = ({setAddNewBlogToggle}) => {
     const dispatch = useDispatch();
@@ -29,25 +30,30 @@ const AddNewBlogForm = ({setAddNewBlogToggle}) => {
 
   return (
             <form onSubmit={handleCreateBlog}>
-              <label>Title</label>
-                <input
-                  type='text'
-                  value={title}
-                  name='title'
-                  placeholder='title'
-                  id='title'
-                  onChange={({target}) => setTitle(target.value)}
-                />
-              <label>Author</label>
-                <input
-                  type='text'
-                  value={author}
-                  name='author'
-                  placeholder='author'
-                  id='author'
-                  onChange={({target}) => setAuthor(target.value)}
-                />
-              <label>URL</label>
+              <div style={inputContainer}>
+                <label>Title</label>
+                  <input
+                    type='text'
+                    value={title}
+                    name='title'
+                    placeholder='title'
+                    id='title'
+                    onChange={({target}) => setTitle(target.value)}
+                  />
+              </div>
+              <div style={inputContainer}>
+                <label>Author</label>
+                  <input
+                    type='text'
+                    value={author}
+                    name='author'
+                    placeholder='author'
+                    id='author'
+                    onChange={({target}) => setAuthor(target.value)}
+                  />
+              </div>
+              <div style={inputContainer}>
+                <label>URL</label>
                 <input
                   type='text'
                   value={url}
@@ -56,7 +62,8 @@ const AddNewBlogForm = ({setAddNewBlogToggle}) => {
                   id='url'
                   onChange={({target}) => setUrl(target.value)}
                 />
-                <button id='addBtn'>add</button>
+              </div>
+              <button style={addBtn} id='addBtn'>add</button>
             </form>
   );
 };

@@ -1,26 +1,19 @@
-import React, {useState} from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { showSuccessMessage } from '../reducers/notificationReducer.js';
-import { deleteBlog, voteOnBlog } from '../reducers/blogsReducer.js';
+import { addComment, deleteBlog, initializeBlogs, voteOnBlog } from '../reducers/blogsReducer.js';
+import { useNavigate } from 'react-router-dom';
+import { blogTitleContainer, blogTitle, blogContainer, titleWithBtnStyle, propStyle, deleteBtn, addBtn } from '../styles/styles.js';
 
-const Blog = ({blog, user}) => {
+const Blog = ({displayedBlog}) => {
   const dispatch = useDispatch();
-  const [details, setDetails] = useState(false);
-  const {id, title, url, likes, author } = blog;
+  const navigate = useNavigate();
+  console.log(displayedBlog);
 
-  const blogStyle = {
-    padding: 8,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  };
+  const user = useSelector(state => state.user);
+  const {id, title, url, likes, author, comments } = displayedBlog;
 
-  const titleWithBtnStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12
-  };
+  const [content, setContent] = useState('');
 
   const handleUpdateBlog = async (id) => {
     dispatch(voteOnBlog(id));
@@ -31,36 +24,62 @@ const Blog = ({blog, user}) => {
     if (window.confirm(`Do you really want to delete ${title}?`)) {
       dispatch(deleteBlog(id));
       dispatch(showSuccessMessage(`you deleted ${title}`));
+      navigate('/');
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const comment = {content: content};
+
+    dispatch(addComment(id, comment));
+    dispatch(initializeBlogs());
+  };
+
   return (
-    <div style={blogStyle} className='blog'>
-      <div style={titleWithBtnStyle}>
-        <p className='title'>{title}</p><p>{author}</p>
-        <button className='detailsBtn' id='detailsBtn' onClick={() => setDetails(!details)}>{details ? 'hide' : 'view'} details</button>
+    <div style={blogContainer} className='blog'>
+      <div style={blogTitleContainer}>
+        <p style={blogTitle}>{title}</p><p>/ {author}</p>
       </div>
-      {details &&
         <div>
-          <p>URL: {url}</p>
           <div style={titleWithBtnStyle}>
-            <p id='likes'>Votes: {likes}</p>
-            <button className='addBtn' id='addBtn' onClick={() => handleUpdateBlog(id)}>add vote</button>
+            <p style={propStyle}>URL: </p><p>{url}</p>
           </div>
-          <p>Author of post: {blog.user.username}</p>
-          {user.username === blog.user.username &&
-            <button id='deleteBtn' onClick={() => handleDeleteBlog(id)}>remove blog</button>
+          <div style={titleWithBtnStyle}>
+            <p id='likes' style={propStyle}>Votes: </p><p>{likes}</p>
+            <button style={addBtn} className='addBtn' id='addBtn' onClick={() => handleUpdateBlog(id)}>add vote</button>
+          </div>
+          <div style={titleWithBtnStyle}>
+            <p style={propStyle}>Author of post: </p><p>{displayedBlog.user.username}</p>
+          </div>
+          <div style={blogContainer}>
+            <h3 style={blogTitleContainer}>Comments</h3>
+            <div style={titleWithBtnStyle}>
+              <p>add comment:</p>
+              <form onSubmit={handleSubmit}>
+                <input
+                  type='text'
+                  value={content}
+                  name='content'
+                  placeholder='comment here...'
+                  id='content'
+                  onChange={({target}) => setContent(target.value)}
+                />
+                <button>add</button>
+              </form>
+            </div>
+            <ul>
+              {comments.length !== 0 &&
+                comments.map(i => <li key={i.content}>{i.content}</li>)
+              }
+            </ul>
+          </div>
+          {user.username === displayedBlog.user.username &&
+            <button style={deleteBtn} id='deleteBtn' onClick={() => handleDeleteBlog(id)}>remove blog</button>
           }
         </div>
-      }
     </div>
   );
 };
 
 export default Blog;
-
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  // setBlogs: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired
-};

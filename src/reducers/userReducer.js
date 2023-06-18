@@ -32,6 +32,5 @@ export const removeUser = () => {
     };
 };
 
-
 export const { setUser, logOutUser } = userSlice.actions;
 export default userSlice.reducer;
