@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showSuccessMessage } from '../reducers/notificationReducer.js';
 import { deleteBlog, voteOnBlog } from '../reducers/blogsReducer.js';
 
-const Blog = ({blog, user}) => {
+const Blog = ({displayedBlog}) => {
   const dispatch = useDispatch();
-  const [details, setDetails] = useState(false);
-  const {id, title, url, likes, author } = blog;
+  const user = useSelector(state => state.user);
+  const {id, title, url, likes, author } = displayedBlog;
 
   const blogStyle = {
     padding: 8,
@@ -38,21 +38,18 @@ const Blog = ({blog, user}) => {
     <div style={blogStyle} className='blog'>
       <div style={titleWithBtnStyle}>
         <p className='title'>{title}</p><p>{author}</p>
-        <button className='detailsBtn' id='detailsBtn' onClick={() => setDetails(!details)}>{details ? 'hide' : 'view'} details</button>
       </div>
-      {details &&
         <div>
           <p>URL: {url}</p>
           <div style={titleWithBtnStyle}>
             <p id='likes'>Votes: {likes}</p>
             <button className='addBtn' id='addBtn' onClick={() => handleUpdateBlog(id)}>add vote</button>
           </div>
-          <p>Author of post: {blog.user.username}</p>
-          {user.username === blog.user.username &&
+          <p>Author of post: {displayedBlog.user.username}</p>
+          {user.username === displayedBlog.user.username &&
             <button id='deleteBtn' onClick={() => handleDeleteBlog(id)}>remove blog</button>
           }
         </div>
-      }
     </div>
   );
 };
@@ -60,7 +57,5 @@ const Blog = ({blog, user}) => {
 export default Blog;
 
 Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  // setBlogs: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired
+  blog: PropTypes.object.isRequired
 };
